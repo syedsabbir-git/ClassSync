@@ -57,15 +57,15 @@ const copyToClipboard = (text) => {
     document.body.removeChild(textArea);
   }
 };
- // Add this missing function
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-orange-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
-    }
-  };
+// Add this missing function
+const getPriorityColor = (priority) => {
+  switch (priority) {
+    case 'high': return 'bg-red-500';
+    case 'medium': return 'bg-orange-500';
+    case 'low': return 'bg-green-500';
+    default: return 'bg-gray-500';
+  }
+};
 // Simple Pressure Indicator Component
 const PressureIndicator = ({ pressure }) => {
   const percentage = Math.max(0, Math.min(100, pressure));
@@ -246,7 +246,7 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
       alert(`No ${resourceType} link available for this course`);
       return;
     }
-    
+
     if (resourceType === 'Enrollment Key') {
       copyToClipboard(url);
     } else {
@@ -256,44 +256,40 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
 
   const getResourceButton = (type, url, label) => {
     const hasResource = url && url.trim() !== '';
-    
+
     const getIcon = () => {
       switch (type) {
         case 'telegram':
           return (
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
-              hasResource ? 'bg-blue-500' : 'bg-gray-400'
-            }`}>
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-blue-500' : 'bg-gray-400'
+              }`}>
               <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.787l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/>
+                <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.787l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z" />
               </svg>
             </div>
           );
         case 'whatsapp':
           return (
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
-              hasResource ? 'bg-green-500' : 'bg-gray-400'
-            }`}>
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-green-500' : 'bg-gray-400'
+              }`}>
               <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488" />
               </svg>
             </div>
           );
         case 'blc':
           return (
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white ${
-              hasResource ? 'bg-indigo-600' : 'bg-gray-400'
-            }`}>
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white ${hasResource ? 'bg-indigo-600' : 'bg-gray-400'
+              }`}>
               BLC
             </div>
           );
         case 'key':
           return (
-            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
-              hasResource ? 'bg-orange-500' : 'bg-gray-400'
-            }`}>
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-orange-500' : 'bg-gray-400'
+              }`}>
               <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 0 1 2 2m4 0a6 6 0 0 1-7.743 5.743L11 17H9v2H7v2H4a1 1 0 0 1-1-1v-2.586a1 1 0 0 1 .293-.707l5.964-5.964A6 6 0 1 1 21 9z" />
               </svg>
             </div>
           );
@@ -301,15 +297,14 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
           return null;
       }
     };
-    
+
     return (
       <button
         onClick={() => handleResourceClick(label, url)}
-        className={`p-1 sm:p-2 rounded-lg transition-all ${
-          hasResource 
-            ? 'hover:scale-110 hover:shadow-md' 
-            : 'opacity-60 hover:opacity-100'
-        }`}
+        className={`p-1 sm:p-2 rounded-lg transition-all ${hasResource
+          ? 'hover:scale-110 hover:shadow-md'
+          : 'opacity-60 hover:opacity-100'
+          }`}
         title={hasResource ? `Click to ${type === 'key' ? 'copy' : 'open'} ${label}` : `No ${label} available`}
       >
         {getIcon()}
@@ -322,27 +317,27 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
       <td className="py-3 sm:py-4 px-2 sm:px-4">
         <div className="font-medium text-gray-900 text-xs sm:text-sm leading-tight">{course.courseName}</div>
       </td>
-      
+
       {/* Telegram */}
       <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('telegram', course.telegramLink, 'Telegram Group')}
       </td>
-      
+
       {/* WhatsApp */}
       <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('whatsapp', course.whatsappLink, 'WhatsApp Group')}
       </td>
-      
+
       {/* BLC */}
       <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('blc', course.blcLink, 'BLC Course')}
       </td>
-      
+
       {/* Enrollment Key */}
       <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('key', course.enrollmentKey, 'Enrollment Key')}
       </td>
-      
+
       {/* Actions for CR */}
       {isCR && (
         <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
@@ -694,28 +689,82 @@ const OverviewPage = ({ onNavigate }) => {
   };
 
   // Handle create/update course resources
-  const handleCreateCourseResources = async (courseData) => {
+  // Fixed handleCreateCourseResources function in your OverviewPage
+  const handleSubmitCourseResources = async (courseData) => {
     if (!selectedSection) {
       return { success: false, error: 'Please select a section first' };
     }
 
-    const result = await courseResourcesService.updateCourseResources({
-      ...courseData,
-      sectionId: selectedSection.id,
-      crId: userData.uid
-    });
+    try {
+      let result;
 
-    if (result.success) {
-      // Reload course resources
-      const updatedResult = await courseResourcesService.getCourseResourcesBySection(selectedSection.id);
-      if (updatedResult.success) {
-        setCourseResources(updatedResult.resources || []);
+      if (editingCourse) {
+        // EDIT MODE - Use the existing resource ID
+        console.log('Editing course resource:', editingCourse.id, courseData);
+
+        result = await courseResourcesService.updateCourseResources({
+          resourceId: editingCourse.id,  // Pass the existing resource ID
+          sectionId: selectedSection.id,
+          crId: userData.uid,
+          courseCode: courseData.courseCode,
+          courseName: courseData.courseName,
+          telegramLink: courseData.telegramLink || '',
+          whatsappLink: courseData.whatsappLink || '',
+          blcLink: courseData.blcLink || '',
+          enrollmentKey: courseData.enrollmentKey || ''
+        });
+      } else {
+        // CREATE MODE - No resourceId for new resource
+        console.log('Creating new course resource:', courseData);
+
+        result = await courseResourcesService.updateCourseResources({
+          sectionId: selectedSection.id,
+          crId: userData.uid,
+          courseCode: courseData.courseCode,
+          courseName: courseData.courseName,
+          telegramLink: courseData.telegramLink || '',
+          whatsappLink: courseData.whatsappLink || '',
+          blcLink: courseData.blcLink || '',
+          enrollmentKey: courseData.enrollmentKey || ''
+        });
       }
-      setShowCourseResourcesModal(false);
-      setEditingCourse(null);
-    }
 
-    return result;
+      if (result.success) {
+        // Update local state properly
+        setCourseResources(prev => {
+          if (editingCourse) {
+            // Update existing course in the list
+            return prev.map(course =>
+              course.id === editingCourse.id
+                ? { ...course, ...courseData, updatedAt: new Date().toISOString() }
+                : course
+            );
+          } else {
+            // Add new course to the list
+            const newCourse = {
+              id: result.resource?.id || `${selectedSection.id}_${courseData.courseCode.trim().replace(/\s+/g, '_')}`,
+              ...courseData,
+              sectionId: selectedSection.id,
+              crId: userData.uid,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            return [...prev, newCourse];
+          }
+        });
+
+        // Close modal and reset state
+        setShowCourseResourcesModal(false);
+        setEditingCourse(null);
+
+        return { success: true };
+      } else {
+        return { success: false, error: result.error };
+      }
+    } catch (error) {
+      console.error('Error submitting course resources:', error);
+      return { success: false, error: 'Failed to save course resources' };
+    }
   };
 
   // Open edit course modal
@@ -756,153 +805,167 @@ const OverviewPage = ({ onNavigate }) => {
   return (
     <div className="p-3 sm:p-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+        {/* Task Count Cards - Fill Gap with Height Matching */}
+<div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
 
-        {/* Task Count Cards with Sections Info - Responsive Layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-
-          {/* Left side - Tasks in 2x2 grid - Responsive */}
-          <div className="xl:col-span-2">
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
-              {/* Quiz Card - Mobile Optimized */}
-              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-600">{taskCounts.quizzes}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">Quizzes</p>
-                  </div>
-                  <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
-                    <HelpCircle className="h-5 w-5 sm:h-7 sm:w-7 text-blue-600" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Assignment Card - Mobile Optimized */}
-              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg sm:text-2xl font-bold text-orange-600">{taskCounts.assignments}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">Assignments</p>
-                  </div>
-                  <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg">
-                    <FileText className="h-5 w-5 sm:h-7 sm:w-7 text-orange-600" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Lab Reports Card - Mobile Optimized */}
-              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg sm:text-2xl font-bold text-green-600">{taskCounts.labReports}</p>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-tight">Lab Reports</p>
-                  </div>
-                  <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg">
-                    <FlaskConical className="h-5 w-5 sm:h-7 sm:w-7 text-green-600" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Presentations Card - Mobile Optimized */}
-              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg sm:text-2xl font-bold text-purple-600">{taskCounts.presentations}</p>
-                    <p className="text-xs sm:text-sm text-gray-600">Presentations</p>
-                  </div>
-                  <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg">
-                    <Presentation className="h-5 w-5 sm:h-7 sm:w-7 text-purple-600" />
-                  </div>
-                </div>
-              </div>
+  {/* Left side - 4 Task Cards Container with Full Height */}
+  <div className="xl:col-span-2 flex">
+    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm w-full flex flex-col">
+      <h3 className="font-semibold text-gray-900 mb-4 text-sm sm:text-base">Task Overview</h3>
+      
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-1">
+        {/* Quiz Card - Now fills available height */}
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 hover:shadow-sm transition-all hover:bg-white flex items-center">
+          <div className="flex items-center justify-between w-full">
+            {/* Left side - Text and Count */}
+            <div className="flex flex-col">
+              <p className="text-xl sm:text-2xl font-bold text-blue-600 leading-none">{taskCounts.quizzes}</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">Quizzes</p>
+            </div>
+            
+            {/* Right side - Icon */}
+            <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg ml-2">
+              <HelpCircle className="h-4 w-4 text-blue-600" />
             </div>
           </div>
+        </div>
 
-          {/* Right side - Sections List - Mobile Responsive */}
-          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
-            <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Your Sections</h3>
-            {sections.length ? (
-              <div className="space-y-3 sm:space-y-4 max-h-[24rem] sm:max-h-[28rem] overflow-y-auto">
-                {sections.map((section) => (
-                  <div key={section.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 bg-gray-50">
-                    {/* Department and Batch - Mobile Optimized */}
-                    <div className="mb-2 sm:mb-3">
-                      <h4 className="font-medium text-gray-900 text-xs sm:text-sm leading-tight">
-                        {section.departmentName}
-                      </h4>
-                      <p className="text-xs text-gray-600">Batch: {section.batchNumber}</p>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-xs text-gray-500">
-                          {section.studentCount || 0} students • {section.activityCount || 0} activities
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {formatDate(section.createdAt, 'short')}
-                        </span>
-                      </div>
-                    </div>
+        {/* Assignment Card - Now fills available height */}
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 hover:shadow-sm transition-all hover:bg-white flex items-center">
+          <div className="flex items-center justify-between w-full">
+            {/* Left side - Text and Count */}
+            <div className="flex flex-col">
+              <p className="text-xl sm:text-2xl font-bold text-orange-600 leading-none">{taskCounts.assignments}</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">Assignments</p>
+            </div>
+            
+            {/* Right side - Icon */}
+            <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg ml-2">
+              <FileText className="h-4 w-4 text-orange-600" />
+            </div>
+          </div>
+        </div>
 
-                    {/* Section Key - Mobile Responsive OTP Style */}
-                    <div className="mb-2 sm:mb-3">
-                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
-                        Section Key
-                      </label>
-                      <div className="flex items-center justify-between">
-                        {/* OTP-style key display - Mobile Responsive */}
-                        <div className="flex space-x-0.5 sm:space-x-1">
-                          {(section.sectionKey || section.id).split('').map((char, index) => (
-                            <div
-                              key={index}
-                              className="w-6 h-7 sm:w-8 sm:h-10 bg-white border-2 border-blue-200 rounded-lg flex items-center justify-center font-mono font-bold text-blue-700 text-xs sm:text-sm shadow-sm"
-                            >
-                              {char}
-                            </div>
-                          ))}
-                        </div>
+        {/* Lab Reports Card - Now fills available height */}
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 hover:shadow-sm transition-all hover:bg-white flex items-center">
+          <div className="flex items-center justify-between w-full">
+            {/* Left side - Text and Count */}
+            <div className="flex flex-col">
+              <p className="text-xl sm:text-2xl font-bold text-green-600 leading-none">{taskCounts.labReports}</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1 leading-tight">Lab Reports</p>
+            </div>
+            
+            {/* Right side - Icon */}
+            <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg ml-2">
+              <FlaskConical className="h-4 w-4 text-green-600" />
+            </div>
+          </div>
+        </div>
 
-                        {/* Copy button - Mobile Optimized */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            copyToClipboard(section.sectionKey || section.id);
-                          }}
-                          title="Copy Section Key"
-                          className="ml-2 sm:ml-3 p-1.5 sm:p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors group"
-                        >
-                          <ClipboardIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 group-hover:text-blue-700" />
-                        </button>
-                      </div>
-                    </div>
+        {/* Presentations Card - Now fills available height */}
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 hover:shadow-sm transition-all hover:bg-white flex items-center">
+          <div className="flex items-center justify-between w-full">
+            {/* Left side - Text and Count */}
+            <div className="flex flex-col">
+              <p className="text-xl sm:text-2xl font-bold text-purple-600 leading-none">{taskCounts.presentations}</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">Presentations</p>
+            </div>
+            
+            {/* Right side - Icon */}
+            <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg ml-2">
+              <Presentation className="h-4 w-4 text-purple-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  {/* Right side - Sections List (unchanged) */}
+  <div className="xl:col-span-1 bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+    <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Your Sections</h3>
 
-                    {/* CR Info - Mobile Optimized */}
-                    {section.crName && (
-                      <div className="pt-2 border-t border-gray-200">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">
-                              {section.crName.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="text-xs font-medium text-gray-900 leading-tight">
-                              {section.crName}
-                            </p>
-                            <p className="text-xs text-gray-500">Class Representative</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+    {/* Keep all your existing sections code exactly the same */}
+    {sections.length ? (
+      <div className="space-y-3 sm:space-y-4 max-h-[24rem] sm:max-h-[28rem] overflow-y-auto">
+        {sections.map((section) => (
+          <div key={section.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 bg-gray-50">
+            {/* All your existing section content */}
+            <div className="mb-2 sm:mb-3">
+              <h4 className="font-medium text-gray-900 text-xs sm:text-sm leading-tight">
+                {section.departmentName}
+              </h4>
+              <p className="text-xs text-gray-600">Batch: {section.batchNumber}</p>
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-xs text-gray-500">
+                  {section.studentCount || 0} students • {section.activityCount || 0} activities
+                </span>
+                <span className="text-xs text-gray-400">
+                  {formatDate(section.createdAt, 'short')}
+                </span>
               </div>
-            ) : (
-              <div className="text-center py-6 sm:py-8">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+            </div>
+
+            <div className="mb-2 sm:mb-3">
+              <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
+                Section Key
+              </label>
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-0.5 sm:space-x-1">
+                  {(section.sectionKey || section.id).split('').map((char, index) => (
+                    <div
+                      key={index}
+                      className="w-6 h-7 sm:w-8 sm:h-10 bg-white border-2 border-blue-200 rounded-lg flex items-center justify-center font-mono font-bold text-blue-700 text-xs sm:text-sm shadow-sm"
+                    >
+                      {char}
+                    </div>
+                  ))}
                 </div>
-                <p className="text-xs sm:text-sm text-gray-500">You are not enrolled in any sections.</p>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    copyToClipboard(section.sectionKey || section.id);
+                  }}
+                  title="Copy Section Key"
+                  className="ml-2 sm:ml-3 p-1.5 sm:p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors group"
+                >
+                  <ClipboardIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 group-hover:text-blue-700" />
+                </button>
+              </div>
+            </div>
+
+            {section.crName && (
+              <div className="pt-2 border-t border-gray-200">
+                <div className="flex items-center space-x-2">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">
+                      {section.crName.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-gray-900 leading-tight">
+                      {section.crName}
+                    </p>
+                    <p className="text-xs text-gray-500">Class Representative</p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
+        ))}
+      </div>
+    ) : (
+      <div className="text-center py-6 sm:py-8">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+          <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
         </div>
+        <p className="text-xs sm:text-sm text-gray-500">You are not enrolled in any sections.</p>
+      </div>
+    )}
+  </div>
+</div>
+
 
         {/* Main Content Grid - Mobile Responsive */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -979,9 +1042,8 @@ const OverviewPage = ({ onNavigate }) => {
                       <p className="text-xs text-gray-500 capitalize">{activity.type}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className={`text-xs font-medium ${
-                        isDueToday(activity.dueDate) ? 'text-red-600' : 'text-gray-600'
-                      }`}>
+                      <p className={`text-xs font-medium ${isDueToday(activity.dueDate) ? 'text-red-600' : 'text-gray-600'
+                        }`}>
                         {formatDate(activity.dueDate, 'short')}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -1133,16 +1195,15 @@ const OverviewPage = ({ onNavigate }) => {
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="flex flex-col items-end ml-2 flex-shrink-0">
-                        <span className={`px-2 py-0.5 text-xs rounded-full ${
-                          poll.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                        }`}>
+                        <span className={`px-2 py-0.5 text-xs rounded-full ${poll.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                          }`}>
                           {poll.status === 'active' ? 'Active' : 'Closed'}
                         </span>
-                        
+
                         {poll.status === 'active' && !isCR && (
-                          <button 
+                          <button
                             onClick={(e) => {
                               e.stopPropagation();
                               onNavigate('polls');
@@ -1286,7 +1347,7 @@ const OverviewPage = ({ onNavigate }) => {
               setShowCourseResourcesModal(false);
               setEditingCourse(null);
             }}
-            onSubmit={handleCreateCourseResources}
+            onSubmit={handleSubmitCourseResources}
             sectionId={selectedSection.id}
             initialData={editingCourse}
           />
