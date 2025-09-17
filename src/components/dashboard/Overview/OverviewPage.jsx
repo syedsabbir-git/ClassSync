@@ -57,7 +57,15 @@ const copyToClipboard = (text) => {
     document.body.removeChild(textArea);
   }
 };
-
+ // Add this missing function
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'high': return 'bg-red-500';
+      case 'medium': return 'bg-orange-500';
+      case 'low': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
 // Simple Pressure Indicator Component
 const PressureIndicator = ({ pressure }) => {
   const percentage = Math.max(0, Math.min(100, pressure));
@@ -231,14 +239,14 @@ const PollOverviewCard = ({ poll, onClick, showResults = false, isCR }) => {
 };
 // Add this component before your main OverviewPage component
 
-// Updated CourseResourceRow component with real icons
+// Updated CourseResourceRow component - Mobile Responsive
 const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
   const handleResourceClick = (resourceType, url) => {
     if (!url || url.trim() === '') {
       alert(`No ${resourceType} link available for this course`);
       return;
     }
-
+    
     if (resourceType === 'Enrollment Key') {
       copyToClipboard(url);
     } else {
@@ -248,40 +256,44 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
 
   const getResourceButton = (type, url, label) => {
     const hasResource = url && url.trim() !== '';
-
+    
     const getIcon = () => {
       switch (type) {
         case 'telegram':
           return (
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-blue-500' : 'bg-gray-400'
-              }`}>
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.787l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z" />
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
+              hasResource ? 'bg-blue-500' : 'bg-gray-400'
+            }`}>
+              <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.787l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/>
               </svg>
             </div>
           );
         case 'whatsapp':
           return (
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-green-500' : 'bg-gray-400'
-              }`}>
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488" />
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
+              hasResource ? 'bg-green-500' : 'bg-gray-400'
+            }`}>
+              <svg className="w-3 h-3 sm:w-5 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
               </svg>
             </div>
           );
         case 'blc':
           return (
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white ${hasResource ? 'bg-indigo-600' : 'bg-gray-400'
-              }`}>
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white ${
+              hasResource ? 'bg-indigo-600' : 'bg-gray-400'
+            }`}>
               BLC
             </div>
           );
         case 'key':
           return (
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasResource ? 'bg-orange-500' : 'bg-gray-400'
-              }`}>
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
+              hasResource ? 'bg-orange-500' : 'bg-gray-400'
+            }`}>
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
               </svg>
             </div>
           );
@@ -289,14 +301,15 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
           return null;
       }
     };
-
+    
     return (
       <button
         onClick={() => handleResourceClick(label, url)}
-        className={`p-2 rounded-lg transition-all ${hasResource
-            ? 'hover:scale-110 hover:shadow-md'
+        className={`p-1 sm:p-2 rounded-lg transition-all ${
+          hasResource 
+            ? 'hover:scale-110 hover:shadow-md' 
             : 'opacity-60 hover:opacity-100'
-          }`}
+        }`}
         title={hasResource ? `Click to ${type === 'key' ? 'copy' : 'open'} ${label}` : `No ${label} available`}
       >
         {getIcon()}
@@ -306,47 +319,47 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
 
   return (
     <tr className="border-b border-gray-100 hover:bg-gray-50">
-      <td className="py-4 px-4">
-        <div className="font-medium text-gray-900">{course.courseName}</div>
+      <td className="py-3 sm:py-4 px-2 sm:px-4">
+        <div className="font-medium text-gray-900 text-xs sm:text-sm leading-tight">{course.courseName}</div>
       </td>
-
+      
       {/* Telegram */}
-      <td className="py-4 px-2 text-center">
+      <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('telegram', course.telegramLink, 'Telegram Group')}
       </td>
-
+      
       {/* WhatsApp */}
-      <td className="py-4 px-2 text-center">
+      <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('whatsapp', course.whatsappLink, 'WhatsApp Group')}
       </td>
-
+      
       {/* BLC */}
-      <td className="py-4 px-2 text-center">
+      <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('blc', course.blcLink, 'BLC Course')}
       </td>
-
+      
       {/* Enrollment Key */}
-      <td className="py-4 px-2 text-center">
+      <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
         {getResourceButton('key', course.enrollmentKey, 'Enrollment Key')}
       </td>
-
+      
       {/* Actions for CR */}
       {isCR && (
-        <td className="py-4 px-2 text-center">
-          <div className="flex items-center justify-center space-x-1">
+        <td className="py-3 sm:py-4 px-1 sm:px-2 text-center">
+          <div className="flex items-center justify-center space-x-0.5 sm:space-x-1">
             <button
               onClick={onEdit}
-              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              className="p-1 sm:p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
               title="Edit"
             >
-              <Edit className="h-4 w-4" />
+              <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
             </button>
             <button
               onClick={onDelete}
-              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-1 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               title="Delete"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
             </button>
           </div>
         </td>
@@ -354,6 +367,8 @@ const CourseResourceRow = ({ course, isCR, onEdit, onDelete }) => {
     </tr>
   );
 };
+
+
 
 
 const OverviewPage = ({ onNavigate }) => {
@@ -739,77 +754,79 @@ const OverviewPage = ({ onNavigate }) => {
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="p-3 sm:p-6 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
 
-        {/* Task Count Cards with Sections Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Task Count Cards with Sections Info - Responsive Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
 
-          {/* Left side - Tasks in 2x2 grid */}
-          <div className="grid grid-cols-2 gap-6 lg:col-span-2">
-            {/* Quiz Card */}
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-2xl font-bold text-blue-600">{taskCounts.quizzes}</p>
-                  <p className="text-sm text-gray-600">Quizzes</p>
-                </div>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <HelpCircle className="h-7 w-7 text-blue-600" />
+          {/* Left side - Tasks in 2x2 grid - Responsive */}
+          <div className="xl:col-span-2">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+              {/* Quiz Card - Mobile Optimized */}
+              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg sm:text-2xl font-bold text-blue-600">{taskCounts.quizzes}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Quizzes</p>
+                  </div>
+                  <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+                    <HelpCircle className="h-5 w-5 sm:h-7 sm:w-7 text-blue-600" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Assignment Card */}
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-2xl font-bold text-orange-600">{taskCounts.assignments}</p>
-                  <p className="text-sm text-gray-600">Assignments</p>
-                </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <FileText className="h-7 w-7 text-orange-600" />
+              {/* Assignment Card - Mobile Optimized */}
+              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg sm:text-2xl font-bold text-orange-600">{taskCounts.assignments}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Assignments</p>
+                  </div>
+                  <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg">
+                    <FileText className="h-5 w-5 sm:h-7 sm:w-7 text-orange-600" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Lab Reports Card */}
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-2xl font-bold text-green-600">{taskCounts.labReports}</p>
-                  <p className="text-sm text-gray-600">Lab Reports</p>
-                </div>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <FlaskConical className="h-7 w-7 text-green-600" />
+              {/* Lab Reports Card - Mobile Optimized */}
+              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg sm:text-2xl font-bold text-green-600">{taskCounts.labReports}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 leading-tight">Lab Reports</p>
+                  </div>
+                  <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg">
+                    <FlaskConical className="h-5 w-5 sm:h-7 sm:w-7 text-green-600" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Presentations Card */}
-            <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-2xl font-bold text-purple-600">{taskCounts.presentations}</p>
-                  <p className="text-sm text-gray-600">Presentations</p>
-                </div>
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Presentation className="h-7 w-7 text-purple-600" />
+              {/* Presentations Card - Mobile Optimized */}
+              <div className="bg-white rounded-lg p-3 sm:p-4 border border-gray-200 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg sm:text-2xl font-bold text-purple-600">{taskCounts.presentations}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Presentations</p>
+                  </div>
+                  <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg">
+                    <Presentation className="h-5 w-5 sm:h-7 sm:w-7 text-purple-600" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right side - Sections List */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm overflow-y-auto max-h-[32rem]">
-            <h3 className="font-semibold text-gray-900 mb-4">Your Sections</h3>
+          {/* Right side - Sections List - Mobile Responsive */}
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+            <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">Your Sections</h3>
             {sections.length ? (
-              <div className="space-y-4 max-h-[28rem] overflow-y-auto">
+              <div className="space-y-3 sm:space-y-4 max-h-[24rem] sm:max-h-[28rem] overflow-y-auto">
                 {sections.map((section) => (
-                  <div key={section.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                    {/* Department and Batch */}
-                    <div className="mb-3">
-                      <h4 className="font-medium text-gray-900 text-sm">
+                  <div key={section.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 bg-gray-50">
+                    {/* Department and Batch - Mobile Optimized */}
+                    <div className="mb-2 sm:mb-3">
+                      <h4 className="font-medium text-gray-900 text-xs sm:text-sm leading-tight">
                         {section.departmentName}
                       </h4>
                       <p className="text-xs text-gray-600">Batch: {section.batchNumber}</p>
@@ -823,49 +840,49 @@ const OverviewPage = ({ onNavigate }) => {
                       </div>
                     </div>
 
-                    {/* Section Key - OTP Style */}
-                    <div className="mb-3">
-                      <label className="block text-xs font-medium text-gray-700 mb-2">
+                    {/* Section Key - Mobile Responsive OTP Style */}
+                    <div className="mb-2 sm:mb-3">
+                      <label className="block text-xs font-medium text-gray-700 mb-1 sm:mb-2">
                         Section Key
                       </label>
                       <div className="flex items-center justify-between">
-                        {/* OTP-style key display */}
-                        <div className="flex space-x-1">
+                        {/* OTP-style key display - Mobile Responsive */}
+                        <div className="flex space-x-0.5 sm:space-x-1">
                           {(section.sectionKey || section.id).split('').map((char, index) => (
                             <div
                               key={index}
-                              className="w-8 h-10 bg-white border-2 border-blue-200 rounded-lg flex items-center justify-center font-mono font-bold text-blue-700 text-sm shadow-sm"
+                              className="w-6 h-7 sm:w-8 sm:h-10 bg-white border-2 border-blue-200 rounded-lg flex items-center justify-center font-mono font-bold text-blue-700 text-xs sm:text-sm shadow-sm"
                             >
                               {char}
                             </div>
                           ))}
                         </div>
 
-                        {/* Copy button */}
+                        {/* Copy button - Mobile Optimized */}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             copyToClipboard(section.sectionKey || section.id);
                           }}
                           title="Copy Section Key"
-                          className="ml-3 p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors group"
+                          className="ml-2 sm:ml-3 p-1.5 sm:p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors group"
                         >
-                          <ClipboardIcon className="w-4 h-4 text-blue-600 group-hover:text-blue-700" />
+                          <ClipboardIcon className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 group-hover:text-blue-700" />
                         </button>
                       </div>
                     </div>
 
-                    {/* CR Info */}
+                    {/* CR Info - Mobile Optimized */}
                     {section.crName && (
                       <div className="pt-2 border-t border-gray-200">
                         <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 rounded-full flex items-center justify-center">
                             <span className="text-white text-xs font-bold">
                               {section.crName.charAt(0).toUpperCase()}
                             </span>
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-gray-900">
+                            <p className="text-xs font-medium text-gray-900 leading-tight">
                               {section.crName}
                             </p>
                             <p className="text-xs text-gray-500">Class Representative</p>
@@ -877,43 +894,43 @@ const OverviewPage = ({ onNavigate }) => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <MessageSquare className="w-8 h-8 text-gray-400" />
+              <div className="text-center py-6 sm:py-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                 </div>
-                <p className="text-sm text-gray-500">You are not enrolled in any sections.</p>
+                <p className="text-xs sm:text-sm text-gray-500">You are not enrolled in any sections.</p>
               </div>
             )}
           </div>
-
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Main Content Grid - Mobile Responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
 
-          {/* Pressure Card */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <workloadPressure.icon className={`h-5 w-5 ${workloadPressure.color}`} />
-                <span>Workload Pressure</span>
+          {/* Pressure Card - Mobile Optimized */}
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h3 className="font-semibold text-gray-900 flex items-center space-x-2 text-sm sm:text-base">
+                <workloadPressure.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${workloadPressure.color}`} />
+                <span className="hidden sm:inline">Workload Pressure</span>
+                <span className="sm:hidden">Workload</span>
               </h3>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <PressureIndicator pressure={workloadPressure.level} />
 
-              <div className="text-center mt-4">
-                <p className={`text-3xl font-bold ${workloadPressure.color}`}>
+              <div className="text-center mt-3 sm:mt-4">
+                <p className={`text-2xl sm:text-3xl font-bold ${workloadPressure.color}`}>
                   {workloadPressure.percentage}%
                 </p>
-                <p className={`text-sm font-medium ${workloadPressure.color}`}>
+                <p className={`text-xs sm:text-sm font-medium ${workloadPressure.color}`}>
                   {workloadPressure.text}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">This Week:</span>
                 <span className="font-medium">{workloadPressure.thisWeekCount} tasks</span>
@@ -933,36 +950,38 @@ const OverviewPage = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Upcoming Deadlines with Fixed Height Cards */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <Clock className="h-5 w-5 text-orange-500" />
-                <span>Upcoming Deadlines</span>
+          {/* Upcoming Deadlines - Mobile Optimized */}
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h3 className="font-semibold text-gray-900 flex items-center space-x-2 text-sm sm:text-base">
+                <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-orange-500" />
+                <span className="hidden sm:inline">Upcoming Deadlines</span>
+                <span className="sm:hidden">Deadlines</span>
               </h3>
               <button
                 onClick={() => onNavigate('activities')}
-                className="text-blue-600 text-sm hover:text-blue-700"
+                className="text-blue-600 text-xs sm:text-sm hover:text-blue-700"
               >
                 View All
               </button>
             </div>
 
             {activitiesLoading ? (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="text-center py-3 sm:py-4">
+                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-blue-600 mx-auto"></div>
               </div>
             ) : upcomingDeadlines.length > 0 ? (
               <div className="space-y-2">
                 {upcomingDeadlines.map((activity) => (
-                  <div key={activity.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg h-16">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 text-sm truncate">{activity.title}</p>
+                  <div key={activity.id} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg min-h-[3rem] sm:min-h-[4rem]">
+                    <div className="flex-1 min-w-0 pr-2">
+                      <p className="font-medium text-gray-900 text-xs sm:text-sm truncate leading-tight">{activity.title}</p>
                       <p className="text-xs text-gray-500 capitalize">{activity.type}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className={`text-xs font-medium ${isDueToday(activity.dueDate) ? 'text-red-600' : 'text-gray-600'
-                        }`}>
+                      <p className={`text-xs font-medium ${
+                        isDueToday(activity.dueDate) ? 'text-red-600' : 'text-gray-600'
+                      }`}>
                         {formatDate(activity.dueDate, 'short')}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -973,34 +992,35 @@ const OverviewPage = ({ onNavigate }) => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6">
-                <Calendar className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No upcoming deadlines</p>
+              <div className="text-center py-4 sm:py-6">
+                <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs sm:text-sm text-gray-500">No upcoming deadlines</p>
               </div>
             )}
           </div>
 
-          {/* Announcements Card with Fixed Height Cards */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <Bell className="h-5 w-5 text-blue-500" />
-                <span>Announcements</span>
+          {/* Announcements Card - Mobile Optimized */}
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h3 className="font-semibold text-gray-900 flex items-center space-x-2 text-sm sm:text-base">
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
+                <span className="hidden sm:inline">Announcements</span>
+                <span className="sm:hidden">News</span>
               </h3>
-              <div className="flex items-center space-x-2">
-                {/* Show create button for CRs */}
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                {/* Show create button for CRs - Mobile Optimized */}
                 {isCR && selectedSection && (
                   <button
                     onClick={() => setShowCreateAnnouncementModal(true)}
                     className="p-1 text-blue-600 hover:bg-blue-50 rounded transition-colors"
                     title="Create announcement"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                   </button>
                 )}
                 <button
                   onClick={() => onNavigate('announcements')}
-                  className="text-blue-600 text-sm hover:text-blue-700"
+                  className="text-blue-600 text-xs sm:text-sm hover:text-blue-700"
                 >
                   View All
                 </button>
@@ -1008,23 +1028,43 @@ const OverviewPage = ({ onNavigate }) => {
             </div>
 
             {announcementsLoading ? (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="text-center py-3 sm:py-4">
+                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-blue-600 mx-auto"></div>
               </div>
             ) : announcements.length > 0 ? (
               <div className="space-y-2">
                 {announcements.slice(0, 3).map((announcement) => (
-                  <AnnouncementCard
+                  <div
                     key={announcement.id}
-                    announcement={announcement}
                     onClick={() => handleAnnouncementClick(announcement)}
-                  />
+                    className="p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors min-h-[3rem] sm:min-h-[4rem]"
+                  >
+                    <div className="flex items-center justify-between h-full">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="font-medium text-gray-900 text-xs sm:text-sm truncate leading-tight">
+                          {announcement.title}
+                        </p>
+                        <p className="text-xs text-gray-600 truncate">
+                          {announcement.content.substring(0, 30)}...
+                        </p>
+                      </div>
+
+                      <div className="flex flex-col items-end ml-2 flex-shrink-0">
+                        <div className="flex items-center space-x-1">
+                          <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${getPriorityColor(announcement.priority)}`}></div>
+                          <span className="text-xs text-gray-500">
+                            {formatDate(announcement.createdAt, 'short')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6">
-                <MessageSquare className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No announcements yet</p>
+              <div className="text-center py-4 sm:py-6">
+                <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs sm:text-sm text-gray-500">No announcements yet</p>
                 {isCR && selectedSection && (
                   <button
                     onClick={() => setShowCreateAnnouncementModal(true)}
@@ -1037,27 +1077,28 @@ const OverviewPage = ({ onNavigate }) => {
             )}
           </div>
 
-          {/* Polls & Surveys Card with Fixed Height Cards */}
-          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
-                <BarChart3 className="h-5 w-5 text-green-500" />
-                <span>Polls & Surveys</span>
+          {/* Polls & Surveys Card - Mobile Optimized */}
+          <div className="bg-white rounded-lg p-4 sm:p-5 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h3 className="font-semibold text-gray-900 flex items-center space-x-2 text-sm sm:text-base">
+                <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+                <span className="hidden sm:inline">Polls & Surveys</span>
+                <span className="sm:hidden">Polls</span>
               </h3>
-              <div className="flex items-center space-x-2">
-                {/* Show create button for CRs */}
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                {/* Show create button for CRs - Mobile Optimized */}
                 {isCR && selectedSection && (
                   <button
                     onClick={() => setShowCreatePollModal(true)}
                     className="p-1 text-green-600 hover:bg-green-50 rounded transition-colors"
                     title="Create poll"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                   </button>
                 )}
                 <button
                   onClick={() => onNavigate('polls')}
-                  className="text-blue-600 text-sm hover:text-blue-700"
+                  className="text-blue-600 text-xs sm:text-sm hover:text-blue-700"
                 >
                   View All
                 </button>
@@ -1065,25 +1106,61 @@ const OverviewPage = ({ onNavigate }) => {
             </div>
 
             {pollsLoading ? (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="text-center py-3 sm:py-4">
+                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-blue-600 mx-auto"></div>
               </div>
             ) : pollsDisplay.polls.length > 0 ? (
               <div className="space-y-2">
                 {pollsDisplay.polls.map((poll) => (
-                  <PollOverviewCard
+                  <div
                     key={poll.id}
-                    poll={poll}
-                    showResults={pollsDisplay.showResults}
-                    isCR={isCR}
                     onClick={() => onNavigate('polls')}
-                  />
+                    className="p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors min-h-[3rem] sm:min-h-[4rem]"
+                  >
+                    <div className="flex items-center justify-between h-full">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="font-medium text-gray-900 text-xs sm:text-sm truncate leading-tight">
+                          {poll.question.substring(0, 25)}...
+                        </p>
+                        {pollsDisplay.showResults && poll.totalResponses > 0 ? (
+                          <div className="text-xs text-gray-600">
+                            <span className="font-medium">{poll.options[0]?.text.substring(0, 15)}...</span>
+                            <span className="text-gray-500"> (Top choice)</span>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-gray-500">
+                            {poll.totalResponses || 0} responses
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex flex-col items-end ml-2 flex-shrink-0">
+                        <span className={`px-2 py-0.5 text-xs rounded-full ${
+                          poll.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {poll.status === 'active' ? 'Active' : 'Closed'}
+                        </span>
+                        
+                        {poll.status === 'active' && !isCR && (
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onNavigate('polls');
+                            }}
+                            className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-1"
+                          >
+                            Vote
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6">
-                <BarChart3 className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No polls yet</p>
+              <div className="text-center py-4 sm:py-6">
+                <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs sm:text-sm text-gray-500">No polls yet</p>
                 {isCR && selectedSection && (
                   <button
                     onClick={() => setShowCreatePollModal(true)}
@@ -1097,39 +1174,38 @@ const OverviewPage = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* // Replace the Course Resources section in your OverviewPage.jsx */}
-
-        {/* Course Resources Section - Table Style */}
+        {/* Course Resources Section - Mobile Responsive Table */}
         {selectedSection && (
-          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Important Links</h3>
+          <div className="bg-white rounded-lg p-4 sm:p-6 border border-gray-200 shadow-sm">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Important Links</h3>
               {isCR && (
                 <button
                   onClick={() => setShowCourseResourcesModal(true)}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                  className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-xs sm:text-sm"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Course
+                  <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Add Course</span>
+                  <span className="sm:hidden">Add</span>
                 </button>
               )}
             </div>
 
             {courseResourcesLoading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="text-center py-6 sm:py-8">
+                <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-600 mx-auto"></div>
               </div>
             ) : courseResources.length === 0 ? (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <p className="text-gray-500 mb-4">
-                  {isCR ? 'Add courses to help students access important links' : 'No courses available yet'}
+              <div className="text-center py-6 sm:py-8 bg-gray-50 rounded-lg">
+                <p className="text-xs sm:text-sm text-gray-500 mb-4">
+                  {isCR ? 'Add course resources to help students access important links' : 'No course resources available yet'}
                 </p>
                 {isCR && (
                   <button
                     onClick={() => setShowCourseResourcesModal(true)}
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Add First Course
                   </button>
                 )}
