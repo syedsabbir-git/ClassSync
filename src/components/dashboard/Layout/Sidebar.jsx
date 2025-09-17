@@ -24,7 +24,7 @@ const Sidebar = ({ isOpen, isMobileOpen, onClose, currentPage, onNavigate }) => 
     { id: 'overview', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'activities', name: 'My Tasks', icon: ClipboardList },
     { id: 'calendar', name: 'Calendar', icon: Calendar },
-    { id: 'analytics', name: 'Analytics', icon: BarChart3 },
+    { id: 'resources', name: 'Resources', icon: BookOpen  },
     { id: 'polls', name: 'Polls', icon: BarChart3 },
     ...(isCR ? [{ id: 'students', name: 'Students', icon: Users }] : []),
     { id: 'announcements', name: 'Announcements', icon: Bell},

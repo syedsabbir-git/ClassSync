@@ -51,6 +51,11 @@ const Header = ({ onMenuClick, sidebarOpen, currentPage, pageTitle, pageSubtitle
           title: 'Settings', 
           subtitle: 'Manage your account and preferences' 
         };
+      case 'resources':
+        return { 
+          title: 'Resources', 
+          subtitle: 'Share and discover learning materials from the community'
+        };
       case 'overview':
       default:
         return { 

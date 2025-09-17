@@ -6,11 +6,11 @@ import OverviewPage from '../components/dashboard/Overview/OverviewPage';
 import ActivitiesPage from '../components/dashboard/Activities/ActivitiesPage';
 import CalendarPage from '../components/dashboard/Calendar/CalendarPage';
 import StudentsPage from '../components/dashboard/Students/StudentsPage';
-import AnalyticsPage from '../components/dashboard/Analytics/AnalyticsPage';
 import SettingsPage from '../components/dashboard/Settings/SettingsPage';
 import LandingPage from './LandingPage';
 import AnnouncementsPage from '../components/dashboard/Announcements/AnnouncementsPage';
 import PollsPage from '../components/dashboard/Polls/PollsPage';
+import ResourcesPage from '../components/dashboard/Resources/ResourcesPage';
 
 const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState('overview');
@@ -39,6 +39,8 @@ const Dashboard = () => {
         return <PollsPage onNavigate={handleNavigation} />;
       case 'settings':
         return <SettingsPage onNavigate={handleNavigation} />;
+      case 'resources':
+        return <ResourcesPage onNavigate={handleNavigation} />;
       case 'landingpage':
         return <LandingPage onNavigate={handleNavigation} />;
       default:
