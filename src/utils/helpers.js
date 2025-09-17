@@ -26,9 +26,8 @@ export const isValidEmail = (email) => {
 
 // Validate student ID
 export const isValidStudentId = (studentId) => {
-  // Updated regex for Student ID format like 221-15-6037
-  const studentIdRegex = /^[0-9]{2,4}-[0-9]{2,3}-[0-9]{4,6}$/;
-  return studentIdRegex.test(studentId);
+  if (!studentId) return false;
+  return true; // Assuming any non-empty string is valid for simplicity
 };
 
 // Validate password strength
@@ -38,16 +37,16 @@ export const isStrongPassword = (password) => {
   return passwordRegex.test(password);
 };
 
-// Get priority color
-export const getPriorityColor = (priority) => {
-  switch (priority) {
-    case 'high':
-      return 'text-red-600 bg-red-100';
-    case 'medium':
-      return 'text-yellow-600 bg-yellow-100';
-    case 'low':
-      return 'text-green-600 bg-green-100';
-    default:
-      return 'text-gray-600 bg-gray-100';
-  }
-};
+// // Get priority color
+// export const getPriorityColor = (priority) => {
+//   switch (priority) {
+//     case 'high':
+//       return 'text-red-600 bg-red-100';
+//     case 'medium':
+//       return 'text-yellow-600 bg-yellow-100';
+//     case 'low':
+//       return 'text-green-600 bg-green-100';
+//     default:
+//       return 'text-gray-600 bg-gray-100';
+//   }
+// };
