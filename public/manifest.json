@@ -25,5 +25,6 @@
   "background_color": "#F8FAFC",
   "orientation": "portrait-primary",
   "scope": "/",
-  "categories": ["education", "productivity"]
+  "categories": ["education", "productivity"],
+  "prefer_related_applications": false
 }

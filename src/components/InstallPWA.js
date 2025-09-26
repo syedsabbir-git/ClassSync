@@ -107,7 +107,7 @@ const InstallPWA = () => {
                     if (!localStorage.getItem('classsync-pwa-installed')) {
                         setIsVisible(true);
                     }
-                }, 300000); // Show again after 5 minutes if dismissed
+                }, 600000); // Show again after 5 minutes if dismissed
             }
         } catch (error) {
             console.error('Error during installation:', error);
@@ -128,7 +128,7 @@ const InstallPWA = () => {
             if (!isInstalled && !isCurrentlyStandalone) {
                 setIsVisible(true);
             }
-        }, 120000); // 2 minutes
+        }, 120000*6); // 2 hours
     };
 
     // Don't show banner if app is already installed
