@@ -8,7 +8,7 @@ import EnrollSection from './pages/EnrollSection';
 import Dashboard from './pages/Dashboard';
 import InstallPWA from './components/InstallPWA';
 import sectionService from './services/sectionService';
-import { setupForegroundListener, isFCMSupported } from './services/fcmService'; // Add FCM imports
+import { setupForegroundListener, isFCMSupported } from './services/fcmService';
 
 // Main App Router Component
 function AppRouter() {
