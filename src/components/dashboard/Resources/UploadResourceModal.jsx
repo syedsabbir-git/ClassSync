@@ -126,7 +126,9 @@ const UploadResourceModal = ({ isOpen, onClose, onSuccess }) => {
         topic: formData.topic.trim(),
         course: formData.course.trim(),
         type: formData.type,
-        url: finalUrl,
+        file_url: finalUrl,
+        filename: formData.file?.name || formData.title,
+        file_size: formData.file?.size,
         username: userData.name
       };
 

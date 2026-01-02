@@ -2,7 +2,7 @@
 import { supabase } from '../config/supabase';
 
 const resourceService = {
-  // Upload PDF to Supabase Storage (10MB limit)
+  // Upload PDF to Supabase Storage - Simple approach
   async uploadPDF(file, filename) {
     try {
       // Check file size (10MB limit)
@@ -11,39 +11,60 @@ const resourceService = {
       }
 
       const fileExt = file.name.split('.').pop();
-      const fileName = `${filename.replace(/[^a-zA-Z0-9]/g, '_')}.${fileExt}`;
-      const filePath = `pdfs/${Date.now()}-${fileName}`;
+      const fileName = `${filename.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.${fileExt}`;
+      const filePath = `pdfs/${fileName}`;
+
+      console.log('Uploading PDF to bucket:', filePath);
 
       const { data, error } = await supabase.storage
-        .from('resources')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
+        .from('classsync-files')
+        .upload(filePath, file, { upsert: false });
 
       if (error) {
         console.error('Upload error:', error);
-        return { success: false, error: error.message };
+        return { success: false, error: `Upload failed: ${error.message}` };
       }
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('resources')
+        .from('classsync-files')
         .getPublicUrl(filePath);
 
+      console.log('PDF uploaded successfully:', publicUrl);
       return { success: true, url: publicUrl };
     } catch (error) {
       console.error('Upload PDF error:', error);
-      return { success: false, error: 'Failed to upload PDF' };
+      return { success: false, error: `Upload error: ${error.message}` };
     }
   },
 
   // Create new resource
   async createResource(resourceData) {
     try {
+      // Map to snake_case for Supabase
+      const cleanData = {
+        title: resourceData.title,
+        description: resourceData.description,
+        topic: resourceData.topic,
+        course: resourceData.course,
+        type: resourceData.type,
+        file_url: resourceData.file_url || resourceData.fileURL,
+        filename: resourceData.filename,
+        file_size: resourceData.file_size || resourceData.fileSize,
+        username: resourceData.username,
+        uploaded_by: resourceData.uploaded_by || resourceData.uploadedBy,
+        section_id: resourceData.section_id || resourceData.sectionId,
+        tags: resourceData.tags
+      };
+      
+      // Remove undefined fields to avoid sending nulls
+      Object.keys(cleanData).forEach(key => {
+        if (cleanData[key] === undefined) delete cleanData[key];
+      });
+
       const { data, error } = await supabase
         .from('resources')
-        .insert([resourceData])
+        .insert([cleanData])
         .select()
         .single();
 
@@ -67,7 +88,7 @@ const resourceService = {
         .select('*')
         .order('created_at', { ascending: false });
 
-      // Apply filters
+      // Apply filters only if provided
       if (filters.course) {
         query = query.ilike('course', `%${filters.course}%`);
       }
@@ -82,13 +103,38 @@ const resourceService = {
 
       if (error) {
         console.error('Get resources error:', error);
-        return { success: false, error: error.message };
+        return { success: false, resources: [], error: error.message };
       }
 
       return { success: true, resources: data || [] };
     } catch (error) {
       console.error('Get resources error:', error);
-      return { success: false, error: 'Failed to fetch resources' };
+      return { success: false, resources: [], error: 'Failed to fetch resources' };
+    }
+  },
+
+  // Get resources by section ID
+  async getResourcesBySection(sectionId) {
+    try {
+      if (!sectionId) {
+        return { success: false, resources: [] };
+      }
+
+      const { data, error } = await supabase
+        .from('resources')
+        .select('*')
+        .eq('section_id', sectionId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Get resources by section error:', error);
+        return { success: false, resources: [], error: error.message };
+      }
+
+      return { success: true, resources: data || [] };
+    } catch (error) {
+      console.error('Get resources by section error:', error);
+      return { success: false, resources: [], error: 'Failed to fetch resources' };
     }
   },
 

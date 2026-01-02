@@ -37,4 +37,8 @@ firebase.json
 
 # Environment files
 .env
-.env.*.local" > .gitignore
+.env.*.local
+
+# Documentation and SQL files
+*.md
+*.sql" > .gitignore

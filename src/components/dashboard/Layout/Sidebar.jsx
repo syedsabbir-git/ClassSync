@@ -11,7 +11,8 @@ import {
   BookOpen,
   GraduationCap,
   LogOut,
-  X
+  X,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
 import authService from '../../../services/authService';
@@ -24,6 +25,7 @@ const Sidebar = ({ isOpen, isMobileOpen, onClose, currentPage, onNavigate }) => 
     { id: 'overview', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'activities', name: 'My Tasks', icon: ClipboardList },
     { id: 'calendar', name: 'Calendar', icon: Calendar },
+    { id: 'studyHelper', name: 'Study Helper', icon: Sparkles },
     { id: 'resources', name: 'Resources', icon: BookOpen },
     { id: 'polls', name: 'Polls', icon: BarChart3 },
     ...(isCR ? [{ id: 'students', name: 'Students', icon: Users }] : []),

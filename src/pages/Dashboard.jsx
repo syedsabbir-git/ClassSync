@@ -11,6 +11,7 @@ import LandingPage from './LandingPage';
 import AnnouncementsPage from '../components/dashboard/Announcements/AnnouncementsPage';
 import PollsPage from '../components/dashboard/Polls/PollsPage';
 import ResourcesPage from '../components/dashboard/Resources/ResourcesPage';
+import StudyHelperPage from '../components/dashboard/StudyHelper/StudyHelperPage';
 
 const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState('overview');
@@ -31,6 +32,8 @@ const Dashboard = () => {
         return <ActivitiesPage onNavigate={handleNavigation} />;
       case 'calendar':
         return <CalendarPage onNavigate={handleNavigation} />;
+      case 'studyHelper':
+        return <StudyHelperPage onNavigate={handleNavigation} />;
       case 'students':
         return isCR ? <StudentsPage onNavigate={handleNavigation} /> : <OverviewPage onNavigate={handleNavigation} />;
       case 'announcements':

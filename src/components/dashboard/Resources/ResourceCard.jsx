@@ -29,9 +29,11 @@ const ResourceCard = ({ resource }) => {
   };
 
   const getThumbnail = () => {
+    const url = resource.url || resource.file_url || resource.fileURL;
+    
     // YouTube - Auto extract thumbnail
     if (resource.type === 'youtube' && !imageError) {
-      const thumbnail = resourceService.getYouTubeThumbnail(resource.url);
+      const thumbnail = resourceService.getYouTubeThumbnail(url);
       if (thumbnail) {
         return (
           <img
@@ -46,7 +48,7 @@ const ResourceCard = ({ resource }) => {
     
     // External links - Show favicon
     if (resource.type === 'link' && !imageError) {
-      const favicon = resourceService.getFaviconUrl(resource.url);
+      const favicon = resourceService.getFaviconUrl(url);
       if (favicon) {
         return (
           <div className="w-full h-full flex items-center justify-center bg-gray-100">
@@ -70,7 +72,8 @@ const ResourceCard = ({ resource }) => {
   };
 
   const handleClick = () => {
-    window.open(resource.url, '_blank', 'noopener,noreferrer');
+    const url = resource.file_url || resource.url || resource.fileURL;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const getTypeLabel = () => {
