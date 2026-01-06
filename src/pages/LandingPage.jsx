@@ -46,7 +46,6 @@ const LandingPage = ({ onAuthSuccess }) => {
   const { signUp, signIn, resetPassword, loading, error, clearError } = useAuthActions();
   const { currentUser, userRole, userData } = useAuth();
 
-  // Rest of your existing handlers...
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -73,6 +72,8 @@ const LandingPage = ({ onAuthSuccess }) => {
       errors.email = 'Email is required';
     } else if (!isValidEmail(formData.email)) {
       errors.email = 'Please enter a valid email address';
+    } else if (activeTab === 'signup' && !formData.email.endsWith('@diu.edu.bd')) {
+      errors.email = 'Only DIU email addresses (@diu.edu.bd) are allowed';
     }
 
     if (!formData.password) {
@@ -132,7 +133,7 @@ const LandingPage = ({ onAuthSuccess }) => {
         });
 
         if (result.success) {
-          setSuccessMessage('Account created successfully! Welcome to ClassSync!');
+          setSuccessMessage(result.message || 'Account created successfully! Please check your email to verify your account.');
           setFormData({
             email: '',
             password: '',
@@ -140,6 +141,10 @@ const LandingPage = ({ onAuthSuccess }) => {
             studentId: '',
             confirmPassword: ''
           });
+          setTimeout(() => {
+            setActiveTab('login');
+            setSuccessMessage('');
+          }, 5000);
         }
       }
     } catch (error) {
@@ -193,14 +198,12 @@ const LandingPage = ({ onAuthSuccess }) => {
     }
   ];
 
-  // Show download page if requested
   if (showDownloadPage) {
     return <DownloadPage onBack={() => setShowDownloadPage(false)} />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -219,7 +222,6 @@ const LandingPage = ({ onAuthSuccess }) => {
               </h1>
             </div>
 
-            {/* Download Button */}
             <button
               onClick={() => setShowDownloadPage(true)}
               className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -231,11 +233,8 @@ const LandingPage = ({ onAuthSuccess }) => {
         </div>
       </header>
 
-      {/* Rest of your existing content... */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Your existing left and right side content stays the same */}
-          {/* Left Side - Hero Content */}
           <div className="space-y-8">
             <div className="space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
@@ -250,7 +249,6 @@ const LandingPage = ({ onAuthSuccess }) => {
               </p>
             </div>
 
-            {/* Features Grid */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-6">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start space-x-4 p-4 rounded-2xl bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:shadow-lg transition-all duration-300">
@@ -266,10 +264,8 @@ const LandingPage = ({ onAuthSuccess }) => {
             </div>
           </div>
 
-          {/* Right Side - Auth Form */}
           <div className="relative">
             <div className="bg-white rounded-3xl shadow-2xl shadow-blue-100 border border-gray-200/50 overflow-hidden">
-              {/* Tab Headers */}
               <div className="flex bg-gray-50 border-b border-gray-200">
                 <button
                   onClick={() => {
@@ -302,7 +298,6 @@ const LandingPage = ({ onAuthSuccess }) => {
               </div>
 
               <div className="p-8">
-                {/* Success Message */}
                 {successMessage && (
                   <div className="mb-6 p-4 bg-green-100 border border-green-200 text-green-700 rounded-xl">
                     <div className="flex items-center space-x-2">
@@ -312,7 +307,6 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </div>
                 )}
 
-                {/* Error Message */}
                 {error && (
                   <div className="mb-6 p-4 bg-red-100 border border-red-200 text-red-700 rounded-xl">
                     <div className="flex items-center space-x-2">
@@ -322,7 +316,6 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </div>
                 )}
 
-                {/* User Type Selection - Only for Signup */}
                 {activeTab === 'signup' && (
                   <div className="mb-8">
                     <label className="block text-sm font-medium text-gray-700 mb-4">
@@ -356,7 +349,6 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </div>
                 )}
 
-                {/* All your existing form fields stay the same */}
                 <div className="space-y-6">
                   {activeTab === 'signup' && (
                     <div>
@@ -410,7 +402,7 @@ const LandingPage = ({ onAuthSuccess }) => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
+                      Email Address {activeTab === 'signup' && <span className="text-xs text-gray-500">(@diu.edu.bd)</span>}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -423,7 +415,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                         onChange={handleInputChange}
                         className={`block w-full pl-10 pr-3 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${validationErrors.email ? 'border-red-300 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'
                           }`}
-                        placeholder="Enter your email"
+                        placeholder={activeTab === 'signup' ? 'your-id@diu.edu.bd' : 'Enter your email'}
                       />
                     </div>
                     {validationErrors.email && (
@@ -540,7 +532,6 @@ const LandingPage = ({ onAuthSuccess }) => {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="mt-20 border-t border-gray-200 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-600">
@@ -551,7 +542,6 @@ const LandingPage = ({ onAuthSuccess }) => {
     </div>
   );
 };
-// Enhanced Download Page Component with Direct Install Button
 const DownloadPage = ({ onBack }) => {
   const [deviceType, setDeviceType] = useState('desktop');
   const [activeGuide, setActiveGuide] = useState('auto');

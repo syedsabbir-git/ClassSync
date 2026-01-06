@@ -1,9 +1,9 @@
-// src/services/authService.js - Complete version with all methods
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   signOut, 
   sendPasswordResetEmail,
+  sendEmailVerification,
   updateProfile as firebaseUpdateProfile,
   updatePassword,
   reauthenticateWithCredential,
@@ -14,34 +14,35 @@ import { auth, db } from '../config/firebase';
 import Cookies from 'js-cookie';
 
 class AuthService {
-  // Sign up new user
   async signUp({ email, password, name, userType, studentId = null }) {
     try {
-      // Validate required fields
+
       if (!email || !password || !name || !userType) {
         throw new Error('Email, password, name, and user type are required');
+      }
+
+      if (!email.endsWith('@diu.edu.bd')) {
+        throw new Error('Only DIU email addresses (@diu.edu.bd) are allowed');
       }
 
       if (!['student', 'cr'].includes(userType)) {
         throw new Error('User type must be either "student" or "cr"');
       }
 
-      // Create user account
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Update display name
+      
       await firebaseUpdateProfile(user, {
         displayName: name
       });
 
-      // Create user document in Firestore
       const userData = {
         uid: user.uid,
         email: user.email,
         name: name,
-        role: userType, // Make sure this is set properly
+        role: userType, 
         phone: '',
+        emailVerified: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         ...(studentId && { studentId: studentId }),
@@ -49,7 +50,6 @@ class AuthService {
         ...(userType === 'cr' && { managedSections: [] })
       };
 
-      // Ensure no undefined values
       Object.keys(userData).forEach(key => {
         if (userData[key] === undefined) {
           userData[key] = '';
@@ -58,23 +58,31 @@ class AuthService {
 
       await setDoc(doc(db, 'users', user.uid), userData);
 
-      // Set cookie for session management
-      Cookies.set('userSession', user.uid, { expires: 7 });
+      await sendEmailVerification(user);
 
-      return { success: true, user: userData };
+      await signOut(auth);
+
+      return { 
+        success: true, 
+        user: userData,
+        message: 'Account created successfully! Please check your email to verify your account before signing in.'
+      };
     } catch (error) {
       console.error('Error in signUp:', error);
       return { success: false, error: error.message };
     }
   }
 
-  // Sign in existing user
   async signIn({ email, password }) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Get user data from Firestore
+      if (!user.emailVerified) {
+        await signOut(auth);
+        throw new Error('Please verify your email before signing in. Check your inbox for the verification link.');
+      }
+
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
       if (!userDoc.exists()) {
@@ -83,17 +91,24 @@ class AuthService {
       
       const userData = userDoc.data();
 
-      // Set cookie for session management
+      if (!userData.emailVerified) {
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, {
+          emailVerified: true,
+          updatedAt: serverTimestamp()
+        });
+        userData.emailVerified = true;
+      }
+
       Cookies.set('userSession', user.uid, { expires: 7 });
 
       return { success: true, user: userData };
     } catch (error) {
       console.error('Error in signIn:', error);
-      return { success: false, error: this.getErrorMessage(error.code) };
+      return { success: false, error: this.getErrorMessage(error.code) || error.message };
     }
   }
 
-  // Update user profile - NEW METHOD
   async updateProfile({ name, phone = '', studentId = '' }) {
     try {
       console.log('Updating user profile:', { name, phone, studentId });
@@ -102,19 +117,16 @@ class AuthService {
         throw new Error('No authenticated user found');
       }
 
-      // Validate required fields
       if (!name || name.trim() === '') {
         throw new Error('Name is required');
       }
 
       const userId = auth.currentUser.uid;
       
-      // Update Firebase Auth profile
       await firebaseUpdateProfile(auth.currentUser, {
         displayName: name.trim()
       });
-      
-      // Update Firestore user document
+
       const userRef = doc(db, 'users', userId);
       const updateData = {
         name: name.trim(),
@@ -122,12 +134,10 @@ class AuthService {
         updatedAt: serverTimestamp()
       };
 
-      // Only add studentId if it's provided and not empty
       if (studentId && studentId.trim()) {
         updateData.studentId = studentId.trim();
       }
 
-      // Ensure no undefined values
       Object.keys(updateData).forEach(key => {
         if (updateData[key] === undefined) {
           updateData[key] = '';
@@ -145,7 +155,6 @@ class AuthService {
     }
   }
 
-  // Change password - NEW METHOD
   async changePassword(currentPassword, newPassword) {
     try {
       console.log('Changing user password');
@@ -158,7 +167,6 @@ class AuthService {
         throw new Error('Current password and new password are required');
       }
 
-      // Re-authenticate user with current password
       const credential = EmailAuthProvider.credential(
         auth.currentUser.email,
         currentPassword
@@ -166,7 +174,6 @@ class AuthService {
       
       await reauthenticateWithCredential(auth.currentUser, credential);
       
-      // Update password
       await updatePassword(auth.currentUser, newPassword);
       
       console.log('Password changed successfully');
@@ -178,7 +185,6 @@ class AuthService {
     }
   }
 
-  // Sign out user
   async signOut() {
     try {
       await signOut(auth);
@@ -190,7 +196,6 @@ class AuthService {
     }
   }
 
-  // Reset password
   async resetPassword(email) {
     try {
       await sendPasswordResetEmail(auth, email);
@@ -201,7 +206,6 @@ class AuthService {
     }
   }
 
-  // Get current user data
   async getCurrentUserData() {
     try {
       const user = auth.currentUser;
@@ -216,7 +220,25 @@ class AuthService {
     }
   }
 
-  // Helper method to format error messages
+  async resendVerificationEmail() {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('No authenticated user found');
+      }
+
+      if (user.emailVerified) {
+        throw new Error('Email is already verified');
+      }
+
+      await sendEmailVerification(user);
+      return { success: true, message: 'Verification email sent! Please check your inbox.' };
+    } catch (error) {
+      console.error('Error resending verification email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
   getErrorMessage(errorCode) {
     switch (errorCode) {
       case 'auth/user-not-found':
